@@ -50,6 +50,10 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
 
 	private OnBitmapChangedListener mListener;
 
+	private boolean mLR;
+
+	private boolean mRL;
+
 	public ImageViewTouchBase( Context context ) {
 		super( context );
 		init();
@@ -353,6 +357,7 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
 		Matrix m = getImageViewMatrix( supportMatrix );
 		mBitmapRect.set( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
 		m.mapRect( mBitmapRect );
+		canPan(mBitmapRect, getWidth());
 		return mBitmapRect;
 	}
 
@@ -461,6 +466,16 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
 		center( true, true );
 	}
 
+	private void canPan(RectF rect, float width) {
+		mLR = (rect.left < -1.0f);
+		mRL = (rect.right > (width + 1.0f));
+		// Log.d("scroll", "rect.left " + rect.left + " mLR " + mLR + " rect.right " + rect.right + " mRL " + mRL);
+	}
+	
+	public boolean canPan(int direction) {
+		return direction > 0 ? mLR : mRL; 
+	}
+	
 	protected void updateRect( RectF bitmapRect, RectF scrollRect ) {
 		float width = getWidth();
 		float height = getHeight();
