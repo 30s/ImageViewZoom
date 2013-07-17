@@ -54,6 +54,8 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
 
 	private boolean mRL;
 
+	public boolean fitImageToView = false;
+
 	public ImageViewTouchBase( Context context ) {
 		super( context );
 		init();
@@ -226,9 +228,28 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
 		else
 			mMaxZoom = maxZoom;
 
+		if(fitImageToView )
+			fitImageToView();
+		
 		onBitmapChanged( drawable );
 	}
 
+    protected void fitImageToView(){
+		final Drawable drawable = getDrawable();
+		if ( drawable == null ) {
+			return;
+		}
+		float fw = (float) mThisWidth/(float) drawable.getIntrinsicWidth() ;
+		float fh = (float) mThisHeight/(float) drawable.getIntrinsicHeight() ;
+		float min = Math.min( fw, fh ) ;
+		float x = 1.f / min;
+    	float max = Math.max(fw, fh);
+    	Log.i("DrawTag","ImageSetToMaxScale:"+max);
+    	setMinZoom(max*x);
+    	
+		
+	}
+	
 	protected void onBitmapChanged( final Drawable bitmap ) {
 		if ( mListener != null ) {
 			mListener.onBitmapChanged( bitmap );
