@@ -246,7 +246,7 @@ public class ImageViewTouchBase extends ImageView implements IDisposable {
     	float max = Math.max(fw, fh);
     	Log.i("DrawTag","ImageSetToMaxScale:"+max);
     	setMinZoom(max*x);
-    	
+    	zoomTo(mMinZoom);
 		
 	}
 	
